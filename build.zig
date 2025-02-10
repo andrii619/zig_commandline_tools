@@ -22,6 +22,8 @@ pub fn build(b: *std.Build) !void {
         "Name of the executable",
     ) orelse "all";
 
+    const target = b.standardTargetOptions(.{});
+    const optimize = b.standardOptimizeOption(.{});
     var executables = ArrayList(*Compile).init(allocator);
     defer executables.deinit();
 
@@ -29,34 +31,18 @@ pub fn build(b: *std.Build) !void {
         // build all files
 
         std.debug.print("build all\n", .{});
-        const echo = b.addExecutable(.{
-            .name = "echo",
-            .root_source_file = b.path("./echo/echo.zig"),
-            .target = b.standardTargetOptions(.{}),
-        });
+        const echo = b.addExecutable(.{ .name = "echo", .root_source_file = b.path("./echo/echo.zig"), .target = target, .optimize = optimize });
         try executables.append(echo);
 
-        const ls = b.addExecutable(.{
-            .name = "ls",
-            .root_source_file = b.path("./ls/ls.zig"),
-            .target = b.standardTargetOptions(.{}),
-        });
+        const ls = b.addExecutable(.{ .name = "ls", .root_source_file = b.path("./ls/ls.zig"), .target = target, .optimize = optimize });
         try executables.append(ls);
     } else if (std.mem.eql(u8, name, "echo")) {
         std.debug.print("build echo\n", .{});
-        const echo = b.addExecutable(.{
-            .name = "echo",
-            .root_source_file = b.path("./echo/echo.zig"),
-            .target = b.standardTargetOptions(.{}),
-        });
+        const echo = b.addExecutable(.{ .name = "echo", .root_source_file = b.path("./echo/echo.zig"), .target = target, .optimize = optimize });
         try executables.append(echo);
     } else if (std.mem.eql(u8, name, "ls")) {
         std.debug.print("build ls\n", .{});
-        const ls = b.addExecutable(.{
-            .name = "ls",
-            .root_source_file = b.path("./ls/ls.zig"),
-            .target = b.standardTargetOptions(.{}),
-        });
+        const ls = b.addExecutable(.{ .name = "ls", .root_source_file = b.path("./ls/ls.zig"), .target = target, .optimize = optimize });
         try executables.append(ls);
     }
 
